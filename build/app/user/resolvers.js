@@ -44,5 +44,13 @@ const queries = {
         const userToken = jwt_1.default.generateTokenForUser(userInDb);
         return userToken;
     }),
+    getCurrentUser: (parent, args, ctx) => __awaiter(void 0, void 0, void 0, function* () {
+        var _c;
+        const id = (_c = ctx.user) === null || _c === void 0 ? void 0 : _c.id;
+        if (!id)
+            return null;
+        const user = yield db_1.prismaClient.user.findUnique({ where: { id } });
+        return user;
+    }),
 };
 exports.resolvers = { queries };
