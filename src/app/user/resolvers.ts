@@ -35,7 +35,7 @@ const queries = {
         });
 
         const user = await prismaClient.user.findUnique({
-            where: { email:data.email },
+            where: { email: data.email },
         });
 
         if (!user) {
@@ -55,19 +55,20 @@ const queries = {
 
         return userToken;
     },
-    getCurrentUser: async(parent: any, args: any, ctx: GraphqlContext) => {
+    getCurrentUser: async (parent: any, args: any, ctx: GraphqlContext) => {
         const id = ctx.user?.id;
-        if(!id) return null;
+        if (!id) return null;
 
         const user = await prismaClient.user.findUnique({ where: { id } })
         return user;
     },
+    getUserById: async(parent: any, { id }: { id: string }, ctx: GraphqlContext) => prismaClient.user.findUnique({ where: { id } })
 };
 
 const extraResolvers = {
     User: {
-        tweets: (parent: User) => prismaClient.tweet.findMany({ where:{author: { id: parent.id } } }),
+        tweets: (parent: User) => prismaClient.tweet.findMany({ where: { author: { id: parent.id } } }),
     }
 }
 
-export const resolvers = { queries , extraResolvers };
+export const resolvers = { queries, extraResolvers };
